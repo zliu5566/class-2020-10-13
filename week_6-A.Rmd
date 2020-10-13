@@ -1,0 +1,69 @@
+---
+title: "Week 6, Day 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+
+# Build an urn with 500 red beads, 490 blue beads, and 10 yellow beads. The urn
+# should have two variables: ID and color. Mix up the beads in the urn randomly.
+# That is, we don't want all the red beads to have ID 1 through 500 and so on.
+# Sort the urn by ID.
+
+beads <- c(rep("red", 500), rep("blue", 490), rep("yellow", 10))
+
+urn <- tibble(ID = 1:1000,
+              color = sample(beads))
+
+# Using the book, where a very similar example is given, is highly recommended.
+# But, this example is trickier than the book because you have to mix up the
+# beads before you assign the `ID` values. If you don't tell sample() how many
+# you want, it just gives you back everything, reordered. Try `sample(letters)`
+# to see. (Note that `letters` is a built in object in R.)
+              
+```
+
+We are learning about sampling this week. We are taking the theory of Chapter 5 and applying it in a not-too-toyish example. There is a single, true, unknown parameter. What is your posterior distribution for that parameter? Once you have that posterior, how can you use it to make forecasts about the future? 
+
+
+## Scene 1
+
+**Prompt:** Without using rep_sample_n(), sample 30 beads at random from the urn five times. The resulting tibble should have two columns: `replicate` (with a value of 1 to 5) and `samp` (a list column in which each item is a tibble with 30 rows sampled, with replacement, from `urn`). Each tibble in `samp` will have the same two columns as `urn`. Hint: `sample_n()` is a very handy function. It will sample a random selection of rows from a tibble which you pass it. Also, use `str()` and `view()` interactively to confirm that your oject looks the way you want.
+
+
+
+
+## Scene 2
+
+**Prompt:** What is the probability that, if you sample 50 beads at random, there will be more red than blue beads in the sample?
+
+
+
+
+
+## Scene 3
+
+**Prompt:** As in the book, we will be calculating our posterior distribution of the number of red beads in the urn. Assume that we know that there are 1,000 beads in the urn, all either red, blue or yellow. Create an unnormalized joint distribution of the set of models we are considering and the possible results of our experiment. In this example, we are using a paddle of size 25. (You may want to review the meaning of an unnormalized joint distribution from Chapter 5.) Plot that distribution. It should look very similar to the first plot in Section 6.6.1.
+
+Interpret the meaning of the graphic.
+
+Hint: Review the use of `rbinom()`, especially the `n`, `size` and `prob` arguments, from Chapter 2. Start by creating a tibble with one row. In that row, we assume that there are truly 100 red beads. Draw, in that case, from `rbinom()`, with the appropriate arguments, to see how many red beads we might draw in that case. Call that variable `numb_red`. But that is just one draw! Now make a tibble with two such rows. `map_int()` is a nice tool. See the pattern? We just need a tibble with lots of rows, each one indicating both the "true" number of red beads, and then the number we draw with our paddle. But each value of the true number of red beads needs more than one row, otherwise we won't have enough data to describe the full joint distribution.
+
+
+
+
+## Scene 4
+
+**Prompt:** Using the joint distribution we calculated in Scene 5 as input, calculate your posterior probability density for the number of red beads in the urn, given that that 10 red were sampled in our paddle of 25.
+
+
+
+## Scene 5
+
+**Prompt:** With our posterior probability distribution, we can now forecast outcomes which we have not yet seen. For example, what is the probability of getting more than 3 reds if we sample 20 from the urn, given our posterior? (That is, we are pretending that we don't know the number of red beads in the urn.)
+
+
+
+
