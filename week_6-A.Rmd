@@ -41,7 +41,14 @@ tibble(replicate = 1:5) %>%
 
 **Prompt:** What is the probability that, if you sample 50 beads at random, there will be more red than blue beads in the sample?
 
-
+```{r}
+tibble(replicate = 1:10000) %>%
+  mutate(samp = map(replicate, ~ sample_n(urn, size = 50))) %>%
+  mutate(total_red = map_int(samp, ~ sum(.$color == "red"))) %>%
+  mutate(total_blue = map_int(samp, ~ sum(.$color == "blue"))) %>%
+  mutate(red_more = total_red > total_blue) %>%
+  summarize(red_prob = sum(red_more)/n())
+```
 
 ## Scene 3
 
