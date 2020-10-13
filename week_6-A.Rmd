@@ -32,6 +32,10 @@ We are learning about sampling this week. We are taking the theory of Chapter 5 
 
 **Prompt:** Without using rep_sample_n(), sample 30 beads at random from the urn five times. The resulting tibble should have two columns: `replicate` (with a value of 1 to 5) and `samp` (a list column in which each item is a tibble with 30 rows sampled, with replacement, from `urn`). Each tibble in `samp` will have the same two columns as `urn`. Hint: `sample_n()` is a very handy function. It will sample a random selection of rows from a tibble which you pass it. Also, use `str()` and `view()` interactively to confirm that your oject looks the way you want.
 
+```{r}
+tibble(replicate = 1:5) %>%
+  mutate(samp = map(replicate, ~ sample_n(urn, size = 30, replace = TRUE)))
+```
 
 ## Scene 2
 
