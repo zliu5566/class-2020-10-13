@@ -33,37 +33,23 @@ We are learning about sampling this week. We are taking the theory of Chapter 5 
 **Prompt:** Without using rep_sample_n(), sample 30 beads at random from the urn five times. The resulting tibble should have two columns: `replicate` (with a value of 1 to 5) and `samp` (a list column in which each item is a tibble with 30 rows sampled, with replacement, from `urn`). Each tibble in `samp` will have the same two columns as `urn`. Hint: `sample_n()` is a very handy function. It will sample a random selection of rows from a tibble which you pass it. Also, use `str()` and `view()` interactively to confirm that your oject looks the way you want.
 
 
-
-
 ## Scene 2
 
 **Prompt:** What is the probability that, if you sample 50 beads at random, there will be more red than blue beads in the sample?
 
 
 
-
-
 ## Scene 3
 
-**Prompt:** As in the book, we will be calculating our posterior distribution of the number of red beads in the urn. Assume that we know that there are 1,000 beads in the urn, all either red, blue or yellow. Create an unnormalized joint distribution of the set of models we are considering and the possible results of our experiment. In this example, we are using a paddle of size 25. (You may want to review the meaning of an unnormalized joint distribution from Chapter 5.) Plot that distribution. It should look very similar to the first plot in Section 6.6.1.
+**Prompt:** When performing inference, it is often useful to ask: What are the range of things which might happen if X is true? We saw that in several examples in chapter 5. Assume that a person is sick, how likely is she to test positive for the disease? Assume that there is one white marble in the bag, how likely are we to draw zero white marbles out of three? 
 
-Interpret the meaning of the graphic.
+Let's follow that same intuition in the case of the urn. We have an urn with 1,000 beads. Assume that there are 400 red beads. (This is not true! In fact, we know that there are 500 red beads in the urn. But make the assumption anyway.)
 
-Hint: Review the use of `rbinom()`, especially the `n`, `size` and `prob` arguments, from Chapter 2. Start by creating a tibble with one row. In that row, we assume that there are truly 100 red beads. Draw, in that case, from `rbinom()`, with the appropriate arguments, to see how many red beads we might draw in that case. Call that variable `numb_red`. But that is just one draw! Now make a tibble with two such rows. `map_int()` is a nice tool. See the pattern? We just need a tibble with lots of rows, each one indicating both the "true" number of red beads, and then the number we draw with our paddle. But each value of the true number of red beads needs more than one row, otherwise we won't have enough data to describe the full joint distribution.
+* Using `rbinom()` calculate the number of red beads we might draw from the urn with a paddle of size 25. Hint: `n` is 1 in this case. What does it mean if we set `n` equal to 10?
 
+* Create a tibble with two columns: `numb_red_urn` and `numb_red_paddle`. Initially, the tibble has one row, with `numb_red_urn` set to 400, as in the previous question, and `numb_red_paddle` being the number of red drawn using `rbinom`.
 
+* Extend that tibble to have 7 rows, with `numb_red_urn` set to 100, 200, ..., 700. Make sure that the results in `numb_red_paddle` make sense. `seq()` and `map_int()` are useful.
 
-
-## Scene 4
-
-**Prompt:** Using the joint distribution we calculated in Scene 5 as input, calculate your posterior probability density for the number of red beads in the urn, given that that 10 red were sampled in our paddle of 25.
-
-
-
-## Scene 5
-
-**Prompt:** With our posterior probability distribution, we can now forecast outcomes which we have not yet seen. For example, what is the probability of getting more than 3 reds if we sample 20 from the urn, given our posterior? (That is, we are pretending that we don't know the number of red beads in the urn.)
-
-
-
+* Still using a tibble with those 7 rows, call `rbinom()` with `n = 10`. (This may require other changes in your code.) Turn the resulting tibble, in which `numb_red_paddle` is a list column into an easier-to-work-with tibble in which `numb_red_paddle` is an integer. Hint: `unnest()`. Interpret the resulting object.
 
